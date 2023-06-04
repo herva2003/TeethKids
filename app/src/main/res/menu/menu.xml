@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/Emergencias"
+        android:icon="@drawable/ic_doctor"
+        android:title="@string/Emergencias" />
+
+    <item
+        android:id="@+id/Consultas"
+        android:icon="@drawable/ic_appointment"
+        android:title="@string/Consultas" />
+
+    <item
+        android:id="@+id/Perfil"
+        android:icon="@drawable/ic_profile"
+        android:title="@string/Perfil" />
+</menu>

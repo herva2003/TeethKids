@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/loginFragment">
+
+    <action android:id="@+id/action_homeFragment" app:destination="@id/homeFragment" />
+    <action android:id="@+id/action_loginFragment" app:destination="@id/loginFragment" />
+    <action android:id="@+id/action_profileFragment" app:destination="@id/profileFragment" />
+    <action android:id="@+id/action_completeRegistrationFragment" app:destination="@id/completeRegistrationFragment" />
+    <action android:id="@+id/action_EmergenciaListaFragment" app:destination="@id/emergenciaListaFragment"/>
+    <action android:id="@+id/action_ConsultasFragment" app:destination="@id/consultasFragment"/>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.pi3.teethkids.fragments.auth.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_registerFragment"
+            app:destination="@id/registerFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_completeRegistrationFragment"
+            app:destination="@id/completeRegistrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/consultasFragment"
+        android:name="com.pi3.teethkids.fragments.consultas.ConsultasFragment"
+        android:label="fragment_consultas"
+        tools:layout="@layout/fragment_consultas" >
+        <action
+            android:id="@+id/action_consultaFragment_to_mostrarUsuarioFragment"
+            app:destination="@id/mostrarUsuarioFragment" />
+        <argument
+            android:name="clientPhone"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registerFragment"
+        android:name="com.pi3.teethkids.fragments.auth.RegisterFragment"
+        android:label="fragment_register"
+        tools:layout="@layout/fragment_register" >
+        <action
+            android:id="@+id/action_registerFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_registerFragment_to_completeRegistrationFragment"
+            app:destination="@id/completeRegistrationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/completeRegistrationFragment"
+        android:name="com.pi3.teethkids.fragments.auth.CompleteRegistrationFragment"
+        android:label="fragment_complete_registration"
+        tools:layout="@layout/fragment_complete_registration" >
+        <action
+            android:id="@+id/action_completeRegistrationFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProfileFragment"
+        android:name="com.pi3.teethkids.fragments.auth.EditProfileFragment"
+        android:label="fragment_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_editProfileFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_editProfileFragment_to_cameraPreviewFragment"
+            app:destination="@id/cameraPreviewFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.pi3.teethkids.fragments.auth.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" >
+        <action
+            android:id="@+id/action_profileFragment_to_editProfileFragment"
+            app:destination="@id/editProfileFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_mostrarUsuarioFragment"
+            app:destination="@id/mostrarUsuarioFragment" />
+        <action
+            android:id="@+id/action_profileFragment_to_avaliacoesFragment"
+            app:destination="@id/avaliacoesFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.pi3.teethkids.fragments.misc.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/MostrarEmergenciasFragment"
+        android:name="com.pi3.teethkids.fragments.emergencias.MostrarEmergenciasFragment"
+        android:label="fragment_inspection_show"
+        tools:layout="@layout/fragment_mostrar_emergencias" >
+        <action
+            android:id="@+id/action_mostrarEmergenciasFragment_to_consultasFragment"
+            app:destination="@id/mostrarUsuarioFragment" />
+        <argument
+            android:name="emergencias_id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mostrarUsuarioFragment"
+        android:name="com.pi3.teethkids.fragments.auth.MostrarUsuarioFragment"
+        android:label="fragment_mostrar_usuario"
+        tools:layout="@layout/fragment_mostrar_usuario" >
+        <argument
+            android:name="usuarios_id"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/emergenciaARFragment"
+        android:name="com.pi3.teethkids.fragments.emergencias.EmergenciaARFragment"
+        android:label="fragment_emergencia_review"
+        tools:layout="@layout/fragment_emergencia_ar" >
+        <argument
+            android:name="emergenciaId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_emergenciaReviewFragment_to_emergenciaReviewIndexFragment"
+            app:destination="@id/emergenciaListaFragment" />
+        <action
+            android:id="@+id/action_emergenciaARFragment_to_mostrarUsuarioFragment"
+            app:destination="@id/mostrarUsuarioFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/emergenciaListaFragment"
+        android:name="com.pi3.teethkids.fragments.emergencias.EmergenciaListaFragment"
+        android:label="fragment_emergencia_review_index"
+        tools:layout="@layout/fragment_emergencia_lista" >
+        <action
+            android:id="@+id/action_emergenciaListaFragment_to_emergenciaARFragment"
+            app:destination="@id/emergenciaARFragment" />
+        <action
+            android:id="@+id/action_emergenciaListaFragment_to_mostrarEmergenciaFragment"
+            app:destination="@id/MostrarEmergenciasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cameraPreviewFragment"
+        android:name="com.pi3.teethkids.fragments.auth.CameraPreviewFragment"
+        android:label="fragment_camera_preview"
+        tools:layout="@layout/fragment_camera_preview" />
+    <fragment
+        android:id="@+id/avaliacoesFragment"
+        android:name="com.pi3.teethkids.fragments.auth.AvaliacoesFragment"
+        android:label="fragment_avaliacoes"
+        tools:layout="@layout/fragment_avaliacoes" />
+
+</navigation>
