@@ -14,8 +14,10 @@ import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.R
+import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentMostrarEmergenciasBinding
 import com.pi3.teethkids.models.Emergencia
+import com.pi3.teethkids.models.User
 import com.pi3.teethkids.utils.FirebaseUtils
 import java.text.SimpleDateFormat
 
@@ -58,7 +60,6 @@ class MostrarEmergenciasFragment : Fragment() {
                     Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
-
     }
 
     private fun loadEmergencia() {

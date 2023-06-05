@@ -4,22 +4,33 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.Color
+import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.OvalShape
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.R
 import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentProfileBinding
 import com.pi3.teethkids.models.User
 import com.pi3.teethkids.utils.FirebaseUtils
+import com.squareup.picasso.Callback
+import com.squareup.picasso.Picasso
 import java.text.SimpleDateFormat
 
 
@@ -185,7 +196,42 @@ class   ProfileFragment : Fragment() {
         }
     }
 
+    private fun rotateBitmap(bitmap: Bitmap, degrees: Float): Bitmap {
+        val matrix = Matrix()
+        matrix.postRotate(degrees)
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
+    }
+
     private fun populateUser() {
         binding.txtName.text = user.name
-        }
+
+        FirebaseUtils().firestore
+            .collection("users")
+            .document(user.userId!!)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                // Set the user object
+                if (documentSnapshot.exists()) {
+                    user = documentSnapshot.toObject<User>()!!
+                    user.userId = documentSnapshot.id
+
+                    binding.imgSelfie.background = ShapeDrawable(OvalShape())
+                    binding.imgSelfie.clipToOutline = true
+
+                    val imageUrl = user.selfie
+                    Picasso.get().load(imageUrl).into(binding.imgSelfie, object : Callback {
+                        override fun onSuccess() {
+                            // Rotate the bitmap
+                            val bitmap = (binding.imgSelfie.drawable as BitmapDrawable).bitmap
+                            val rotatedBitmap = rotateBitmap(bitmap, -90f)
+                            binding.imgSelfie.scaleType = ImageView.ScaleType.CENTER_CROP
+                            binding.imgSelfie.setImageBitmap(rotatedBitmap)
+                        }
+
+                        override fun onError(e: Exception) {
+                        }
+                    })
+                }
+            }
+    }
 }
