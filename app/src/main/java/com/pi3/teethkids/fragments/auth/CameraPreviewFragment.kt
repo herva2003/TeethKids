@@ -1,5 +1,6 @@
 package com.pi3.teethkids.fragments.auth
 
+import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -24,6 +25,8 @@ import com.google.firebase.storage.StorageReference
 import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentCameraPreviewBinding
 import com.pi3.teethkids.models.User
+import com.pi3.teethkids.utils.FirebaseUtils
+import java.io.ByteArrayOutputStream
 import java.io.File
 import java.util.UUID
 import java.util.concurrent.ExecutorService

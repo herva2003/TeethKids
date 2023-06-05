@@ -30,6 +30,7 @@ class UserConstants() {
             user.address1?.let { saveData(activity, "address1", it) }
             user.address2?.let { saveData(activity, "address2", it) }
             user.address3?.let { saveData(activity, "address3", it) }
+            user.curriculo?.let { saveData(activity, "curriculo", it) }
 
             // Format date
             user.createdAt?.let {
@@ -47,11 +48,16 @@ class UserConstants() {
             val address1: String? = getData(activity, "address1", "")
             val address2: String? = getData(activity, "address2", "")
             val address3: String? = getData(activity, "address3", "")
+            val curriculo: String? = getData(activity, "curriculo", "")
 
             // Parse string to date
             val createdAtString: String? = getData(activity, "createdAt", "")
-            val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-            val createdAt: Date? = formatter.parse(createdAtString!!)
+            val createdAt: Date? = if (!createdAtString.isNullOrEmpty()) {
+                val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                formatter.parse(createdAtString)
+            } else {
+                null
+            }
 
             // Return user object
             return User(
@@ -62,7 +68,8 @@ class UserConstants() {
                 address1,
                 address2,
                 address3,
-                createdAt,
+                curriculo,
+                createdAt
             )
         }
 
@@ -75,6 +82,7 @@ class UserConstants() {
             saveData(activity, "address1", "")
             saveData(activity, "address2", "")
             saveData(activity, "address3", "")
+            saveData(activity, "curriculo", "")
             saveData(activity, "createdAt", "")
         }
     }

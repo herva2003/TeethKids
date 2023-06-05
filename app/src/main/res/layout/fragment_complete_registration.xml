@@ -12,12 +12,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="26dp"
-            android:layout_marginTop="136dp"
+            android:layout_marginTop="52dp"
             android:layout_marginEnd="24dp"
             android:text="@string/email"
             android:textColor="@color/black"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -125,6 +126,7 @@
             android:text="@string/address_2"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_address_1" />
@@ -138,6 +140,7 @@
             android:ems="10"
             android:hint="@string/address"
             android:inputType="text"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_address_2" />
@@ -152,6 +155,7 @@
             android:text="@string/address_3"
             android:textColor="@color/black"
             android:textStyle="bold"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/input_address_2" />
@@ -165,53 +169,96 @@
             android:ems="10"
             android:hint="@string/address"
             android:inputType="text"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/txt_address_3" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/button_add_address"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="+"
+            android:textColor="@color/white"
+            android:background="@drawable/round_bg"
+            android:backgroundTint="#1566DF"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.08"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/input_address_3"
+            app:layout_constraintVertical_bias="0.003" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_curriculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="Curriculo"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/button_add_address" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/input_curriculo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="24dp"
+            android:ems="10"
+            android:hint="Curriculo"
+            android:inputType="textMultiLine"
+            android:maxLength="2000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txt_curriculo" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/button_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginTop="48dp"
             android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
             android:background="@drawable/round_bg"
-            android:backgroundTint="#0178A0"
+            android:backgroundTint="#1566DF"
             android:text="@string/complete_registration"
             android:textColor="@color/white"
             android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/txt_camera"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="26dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="24dp"
+            android:text="Tire uma foto de perfil"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/input_address_3"
-            tools:text="concluir" />
+            app:layout_constraintTop_toBottomOf="@+id/input_curriculo" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#0178A0"
-            android:minHeight="?attr/actionBarSize"
-            android:theme="?attr/actionBarTheme"
+        <ImageView
+            android:id="@+id/edit_image"
+            android:layout_width="43dp"
+            android:layout_height="41dp"
+            android:layout_marginTop="4dp"
+            android:src="@drawable/ic_camera"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.065"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="19dp"
-            android:password="false"
-            android:text="TextView"
-            android:textAllCaps="true"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Completar cadastro" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     

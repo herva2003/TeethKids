@@ -18,9 +18,8 @@ import com.pi3.teethkids.utils.FirebaseUtils
 class ConsultasFragment : Fragment(), ConsultaAdapterListener {
 
     private lateinit var binding: FragmentConsultasBinding
-    private var consulta : ArrayList<Consulta> = arrayListOf()
-    private lateinit var user : User
-    private lateinit var cons : Consulta
+    private var consultas: ArrayList<Consulta> = arrayListOf()
+    private lateinit var user: User
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentConsultasBinding.inflate(inflater, container, false)
@@ -32,7 +31,7 @@ class ConsultasFragment : Fragment(), ConsultaAdapterListener {
 
         loadUser()
         addEventListeners()
-        loadConsulta()
+        loadConsultas()
     }
 
     private fun loadUser() {
@@ -42,83 +41,77 @@ class ConsultasFragment : Fragment(), ConsultaAdapterListener {
         }
     }
 
-    override fun onAddressSelected(address: String) {
-
+    override fun onAddressSelected(consulta: Consulta, address: String) {
         val emergencyHashMap = hashMapOf(
             "endereco" to address,
         )
 
         FirebaseUtils().firestore
             .collection("consulta")
-            .document(cons.consultaId!!)
+            .document(consulta.consultaId!!)
             .update(emergencyHashMap as Map<String, Any>)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Toast.makeText(context, "Endereço enviado!", Toast.LENGTH_SHORT).show()
                 } else {
-                    Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
     }
 
     private fun addEventListeners() {
-        with (binding) {
-
+        with(binding) {
             val context = requireContext()
             // Initialise adapter
             appointmentsRecyclerView.adapter = ConsultaAdapter(
-                consulta, user.userId!!, context,this@ConsultasFragment)
+                consultas, user.userId!!, context, this@ConsultasFragment
+            )
 
             swipeLayout.setOnRefreshListener {
-                loadConsulta()
+                loadConsultas()
             }
         }
     }
 
-    private fun loadConsulta() {
-        // Clear consulta list
-        consulta = arrayListOf()
+    private fun loadConsultas() {
+        // Clear consultas list
+        consultas.clear()
 
-        // Retrieve Consulta from Firebase
+        // Retrieve Consultas from Firebase
         FirebaseUtils().firestore
             .collection("consulta")
             .whereEqualTo("dentistId", user.userId)
             .get()
-            .addOnCompleteListener { Task ->
-                if (Task.isSuccessful) {
-                    for (document in Task.result.documents) {
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    for (document in task.result.documents) {
                         // Add consulta to ArrayList
-                        val appointment : Consulta = document.toObject<Consulta>()!!
-                        appointment.consultaId = document.id
-                        consulta.add(appointment)
+                        val consulta: Consulta = document.toObject<Consulta>()!!
+                        consulta.consultaId = document.id
+                        consultas.add(consulta)
                     }
-                    // Initialise views if consulta is found
-                    if (consulta.size != 0) {
+                    // Initialise views if consultas are found
+                    if (consultas.isNotEmpty()) {
                         binding.txtEmpty.visibility = View.GONE
                     } else {
                         binding.txtEmpty.visibility = View.VISIBLE
                     }
 
                     // Sort consultas
-                    consulta.sortByDescending {
+                    consultas.sortByDescending {
                         it.createdAt
-                    }
-
-                    // Initialize 'cons' with the first consulta, if available
-                    if (consulta.isNotEmpty()) {
-                        cons = consulta[0]
                     }
 
                     val context = requireContext()
                     // Update recycler view
                     binding.appointmentsRecyclerView.adapter = ConsultaAdapter(
-                        consulta, user.userId!!, context, this@ConsultasFragment )
+                        consultas, user.userId!!, context, this@ConsultasFragment
+                    )
 
                     // Remove refreshing
                     binding.swipeLayout.isRefreshing = false
                 } else {
-                    Toast.makeText(activity, Task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                 }
             }
     }

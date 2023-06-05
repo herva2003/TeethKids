@@ -29,7 +29,7 @@ import android.text.style.StyleSpan
 
 
 interface ConsultaAdapterListener {
-    fun onAddressSelected(address: String)
+    fun onAddressSelected(consulta: Consulta, address: String)
 }
 
 class ConsultaAdapter(
@@ -39,27 +39,17 @@ class ConsultaAdapter(
     private val listener: ConsultaAdapterListener
 ) : RecyclerView.Adapter<ConsultaAdapter.ConsultaViewHolder>() {
 
-    private var holder: ConsultaViewHolder? = null
-    companion object {
-        private const val REQUEST_CALL_PHONE_PERMISSION = 1
-    }
-
     inner class ConsultaViewHolder(val binding: ListConsultaItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         init {
             binding.txtLocal.setOnClickListener {
-                showCustomDialog()
+                showCustomDialog(adapterPosition)
             }
 
             binding.txtDescription.setOnClickListener {
                 val clickedConsulta = consulta[adapterPosition]
                 openDialer(clickedConsulta.userPhoneNumber!!)
             }
-        }
-
-        private var listener: ConsultaAdapterListener? = null
-        fun setListener(listener: ConsultaAdapterListener) {
-            this.listener = listener
         }
     }
 
@@ -68,7 +58,6 @@ class ConsultaAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ConsultaViewHolder {
         val binding = ListConsultaItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         val viewHolder = ConsultaViewHolder(binding)
-        viewHolder.setListener(listener)
         return viewHolder
     }
 
@@ -112,11 +101,10 @@ class ConsultaAdapter(
             context.startActivity(intent)
         } else {
             ActivityCompat.requestPermissions(context as Activity, arrayOf(permission), REQUEST_CALL_PHONE_PERMISSION)
-            holder?.let { this.holder = it }
         }
     }
 
-    private fun showCustomDialog() {
+    private fun showCustomDialog(position: Int) {
         val emergenciasCollection = FirebaseFirestore.getInstance().collection("users")
         val documentId = emergenciasCollection.document(userId)
 
@@ -137,7 +125,8 @@ class ConsultaAdapter(
                 }
                 alertDialogBuilder.setPositiveButton("OK") { _, _ ->
                     if (addSelected != null) {
-                        listener.onAddressSelected(addSelected!!)
+                        val selectedConsulta = consulta[position]
+                        listener.onAddressSelected(selectedConsulta, addSelected!!)
                     } else {
                         Toast.makeText(context, "Selecione um endereço", Toast.LENGTH_SHORT).show()
                     }
@@ -158,5 +147,9 @@ class ConsultaAdapter(
                 button.layoutParams = layoutParams
             }
         }
+    }
+
+    companion object {
+        private const val REQUEST_CALL_PHONE_PERMISSION = 1
     }
 }

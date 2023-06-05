@@ -11,6 +11,7 @@ data class User(
     var address1: String? = null,
     var address2: String? = null,
     var address3: String? = null,
+    var curriculo: String? = null,
     var createdAt: Date? = null,
     var selfie: String? = null,
     var fcmToken: String? = null,
