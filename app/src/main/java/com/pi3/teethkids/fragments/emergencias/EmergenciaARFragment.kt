@@ -160,6 +160,10 @@ class EmergenciaARFragment : Fragment() {
             btnSubmit.setOnClickListener {
                 aceitarEmergencia()
             }
+
+            arrowImage.setOnClickListener {
+                view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
+            }
         }
     }
 
@@ -186,15 +190,33 @@ class EmergenciaARFragment : Fragment() {
                     if (task.isSuccessful) {
                         // Go to emergency review index
                         Toast.makeText(activity, "Emergencia aceitada!", Toast.LENGTH_SHORT).show()
-                        view?.findNavController()?.navigate(R.id.action_emergenciaReviewFragment_to_emergenciaReviewIndexFragment)
+                        view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
                     } else {
                         // Error handling
                         Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                     }
                 }
         }else {
-            Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
-            view?.findNavController()?.navigate(R.id.action_emergenciaReviewFragment_to_emergenciaReviewIndexFragment)
+
+            // Update emergency
+            val emergencyHashMap = hashMapOf(
+                "recusadoPor" to FieldValue.arrayUnion(user.userId),
+            )
+
+            FirebaseUtils().firestore
+                .collection("emergencias")
+                .document(emergencia.emergenciaId!!)
+                .update(emergencyHashMap as Map<String, Any>)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        // Go to emergency review index
+                        Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
+                        view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
+                    } else {
+                        // Error handling
+                        Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                    }
+                }
         }
     }
 }

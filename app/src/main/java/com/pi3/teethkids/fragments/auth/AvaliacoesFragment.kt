@@ -1,15 +1,18 @@
 package com.pi3.teethkids.fragments.auth
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.ktx.toObject
+import com.pi3.teethkids.R
 import com.pi3.teethkids.adapters.ReviewAdapter
 import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentAvaliacoesBinding
@@ -33,7 +36,9 @@ class AvaliacoesFragment : Fragment() {
 
         binding.reviewRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        binding.reviewRecyclerView.adapter = ReviewAdapter(view.context!!, reviews)
+        binding.reviewRecyclerView.adapter = ReviewAdapter(view.context!!, reviews) { review, problematicReason ->
+            markReviewAsProblematic(review, problematicReason)
+        }
 
         loadUser().addOnSuccessListener {
             loadReviews()
@@ -41,6 +46,10 @@ class AvaliacoesFragment : Fragment() {
 
         binding.swipeLayout.setOnRefreshListener {
             loadReviews()
+        }
+
+        binding.arrowImage.setOnClickListener {
+            view.findNavController().navigate(R.id.action_avaliacoesFragment_to_profileFragment)
         }
     }
 
@@ -58,11 +67,17 @@ class AvaliacoesFragment : Fragment() {
                 if (documentSnapshot.exists()) {
                     user = documentSnapshot.toObject<User>()!!
                     user.userId = documentSnapshot.id
+                    calcularMediaNotas(user.userId!!)
                 }
             }
     }
 
     private fun loadReviews() {
+
+        binding.reviewRecyclerView.adapter = ReviewAdapter(view?.context!!, reviews) { review, problematicReason ->
+            markReviewAsProblematic(review, problematicReason)
+        }
+
         // Clear review list
         reviews = arrayListOf()
 
@@ -101,13 +116,61 @@ class AvaliacoesFragment : Fragment() {
                     }
 
                     // Update recycler view
-                    binding.reviewRecyclerView.adapter = ReviewAdapter(view?.context!!, reviews)
+                    binding.reviewRecyclerView.adapter = ReviewAdapter(view?.context!!, reviews) { review, problematicReason ->
+                        markReviewAsProblematic(review, problematicReason)
+                    }
 
                     // Remove refreshing
                     binding.swipeLayout.isRefreshing = false
                 } else {
                     Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                 }
+            }
+    }
+
+    private fun markReviewAsProblematic(review: Review, problematicReason: String) {
+        val disputeData = hashMapOf(
+            "dentistId" to review.dentistId,
+            "avaliacaoId" to review.reviewId,
+            "comentarioAtendimento" to review.reviewDentist,
+            "motivo" to problematicReason
+        )
+
+        FirebaseUtils().firestore
+            .collection("disputas")
+            .add(disputeData)
+            .addOnSuccessListener {
+                Toast.makeText(activity, "Comentário marcado como problemático.", Toast.LENGTH_SHORT).show()
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(activity, "Erro ao marcar o comentário como problemático: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
+    private fun calcularMediaNotas(userId: String) {
+        FirebaseUtils().firestore
+            .collection("avaliacoes")
+            .whereEqualTo("dentistId", userId)
+            .get()
+            .addOnSuccessListener { querySnapshot ->
+                var somaNotas = 0
+                var quantidadeNotas = 0
+
+                for (document: DocumentSnapshot in querySnapshot.documents) {
+                    val notaDentista = document.getDouble("notaAtendimento")
+                    if (notaDentista != null) {
+                        somaNotas += notaDentista.toInt()
+                        quantidadeNotas++
+                    }
+                }
+
+                val mediaNotas = if (quantidadeNotas > 0) somaNotas.toDouble() / quantidadeNotas else 0.0
+                val mediaNotasString = mediaNotas.toString()
+
+                FirebaseUtils().firestore
+                    .collection("users")
+                    .document(userId)
+                    .update("nota", mediaNotasString)
             }
     }
 }

@@ -24,7 +24,6 @@ class MyFirebaseService : FirebaseMessagingService() {
         val msgData = remoteMessage.data
         val notification = remoteMessage.notification
         val msg = msgData["name"]
-        val msg2 = msgData["phone"]
         showNotification(msg!!)
     }
 

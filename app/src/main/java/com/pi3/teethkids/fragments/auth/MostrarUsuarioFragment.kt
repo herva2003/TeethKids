@@ -19,6 +19,8 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.widget.ImageView
+import androidx.navigation.findNavController
+import com.pi3.teethkids.R
 import com.squareup.picasso.Callback
 
 class MostrarUsuarioFragment : Fragment() {
@@ -42,6 +44,10 @@ class MostrarUsuarioFragment : Fragment() {
 
         // Load profile
         loadProfile()
+
+        binding.arrowImage.setOnClickListener {
+            view.findNavController().navigate(R.id.action_mostrarUsuarioFragment_to_profileFragment)
+        }
     }
 
     private fun loadUser() {

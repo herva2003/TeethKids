@@ -74,8 +74,14 @@ class EmergenciaListaFragment : Fragment() {
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         for (document in task.result.documents) {
-                            // Add emergency to ArrayList
-                            val emergencia : Emergencia = document.toObject<Emergencia>()!!
+                            val emergencia: Emergencia = document.toObject<Emergencia>()!!
+
+                            // Skip emergency if user has been declined
+                            val recusadoPor = emergencia.recusadoPor
+                            if (recusadoPor != null && recusadoPor.contains(user.userId!!)) {
+                                continue
+                            }
+
                             emergencia.emergenciaId = document.id
                             emergencias.add(emergencia)
                         }

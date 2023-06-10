@@ -41,6 +41,10 @@ class MostrarEmergenciasFragment : Fragment() {
         binding.btnAvaliacao.setOnClickListener {
             pedirAvaliacao()
         }
+
+        binding.arrowImage.setOnClickListener {
+            view.findNavController().navigate(R.id.action_mostrarEmergenciaFragment_to_emergenciaListaFragment)
+        }
     }
 
     private fun pedirAvaliacao(){

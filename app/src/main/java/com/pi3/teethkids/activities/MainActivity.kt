@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.R
@@ -93,7 +94,10 @@ class MainActivity : AppCompatActivity() {
                 R.id.MostrarEmergenciasFragment -> binding.bottomNavigation.visibility = View.GONE
                 R.id.emergenciaARFragment -> binding.bottomNavigation.visibility = View.GONE
                 R.id.cameraPreviewFragment -> binding.bottomNavigation.visibility = View.GONE
-
+                R.id.editProfileFragment -> binding.bottomNavigation.visibility = View.GONE
+                R.id.mostrarUsuarioFragment -> binding.bottomNavigation.visibility = View.GONE
+                R.id.avaliacoesFragment -> binding.bottomNavigation.visibility = View.GONE
+                
                 else -> binding.bottomNavigation.visibility = View.VISIBLE
             }
 
