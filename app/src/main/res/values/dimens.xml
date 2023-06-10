@@ -2,4 +2,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="list_item_spacing">16dp</dimen>
     <dimen name="list_item_spacing_half">8dp</dimen>
+    <dimen name="dialog_padding">16dp</dimen>
+    <dimen name="line_height">1dp</dimen>
 </resources>

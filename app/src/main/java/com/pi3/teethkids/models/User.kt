@@ -16,5 +16,7 @@ data class User(
     var selfie: String? = null,
     var fcmToken: String? = null,
     var status: String? = null,
+    var nota: String? = null,
+    var count: String? = null,
 )
 

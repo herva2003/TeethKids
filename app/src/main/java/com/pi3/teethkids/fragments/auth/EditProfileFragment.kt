@@ -75,6 +75,10 @@ class EditProfileFragment : Fragment() {
         binding.buttonUpdate.setOnClickListener {
             updateProfile()
         }
+
+        binding.arrowImage.setOnClickListener {
+            view?.findNavController()?.navigate(R.id.action_editProfileFragment_to_profileFragment)
+        }
     }
 
     private fun loadUser() {

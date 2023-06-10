@@ -17,63 +17,44 @@
     <string name="address">Endereço</string>
     <string name="complete_registration">Complete seu cadastro</string>
     <string name="logout">Sair</string>
-    <string name="avaliacoes">Ver suas avaliações</string>
+    <string name="avaliacoes">Avaliações</string>
     <string name="titulo">Termine o seu cadastro</string>
     <string name="cadastro">Cadastro</string>
     <string name="avaliacao">Avaliação</string>
     <string name="fcm_default_title_message" translatable="false">Mensagem</string>
     <string name="default_notification_channel_id" translatable="false">canal_padrao</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="address_1">Endereço 1</string>
     <string name="address_2">Endereço 2</string>
     <string name="address_3">Endereço 3</string>
     <string name="Consultas">Consultas</string>
-    <string name="update_profile">update profile</string>
     <string name="Emergencias">Emergencias</string>
     <string name="home_page_description">descrição</string>
     <string name="new_user_register_now">Criar conta</string>
     <string name="teethkids">TeethKids</string>
     <string name="see_emergencies">Veja emergências disponíveis</string>
-    <string name="add_data">Adicione seus dados</string>
     <string name="Perfil">Perfil</string>
     <string name="home">Home</string>
-    <string name="view_profile">View Profile</string>
-    <string name="edit_profile">Edit Profile</string>
-    <string name="privacy">Privacy</string>
+    <string name="view_profile">Seu perfil</string>
+    <string name="edit_profile">Editar perfil</string>
     <string name="help">Help</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="Create_emergency">Crie uma emergencia</string>
-    <string name="upload_image">Envie uma foto do problema</string>
     <string name="upload">Upload</string>
     <string name="submit">Enviar</string>
     <string name="found_emergencies">Nenhuma emergencia encontrada</string>
-    <string name="add">add</string>
-    <string name="simule_uma_emergencia">Simule uma emergencia</string>
     <string name="telefone">Telefone:</string>
     <string name="aceitar">Aceitar</string>
     <string name="recusar">Recusar</string>
     <string name="detalhes_emergencia">Detalhes da emergencia</string>
     <string name="pendente">Pendente</string>
     <string name="aceitados">Aceitados</string>
-    <string name="recusados">Recusados</string>
     <string name="nenhuma_emergencia_encontrada">Nenhuma emergencia encontrada</string>
     <string name="carregando">Carregando</string>
     <string name="dados">Dados</string>
     <string name="detalhes_da_emergencia">Detalhes da Emergencia</string>
-    <string name="car">. . .</string>
+    <string name="car">Falha</string>
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
-    <!-- Strings used for fragments for navigation -->
-    <string name="first_fragment_label">First Fragment</string>
-    <string name="second_fragment_label">Second Fragment</string>
-    <string name="next">Next</string>
-    <string name="previous">Previous</string>
 
-    <string name="hello_first_fragment">Hello first fragment</string>
-    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="consulta_marcada">Voce marcou uma consulta com Gabriel, ligue para 19912345678 e confirme a consulta.</string>
     <string name="enviar_localiza_o"><u>Enviar localização</u></string>
-    <string name="nome">Nome: </string>
+    <string name="no_review">Nenhuma avaliação encontrada</string>
 </resources>

@@ -86,6 +86,25 @@
             app:layout_constraintTop_toBottomOf="@+id/btn_view_profile" />
 
         <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_avaliacao"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="24dp"
+            android:drawableStart="@drawable/ic_star"
+            android:background="@drawable/grey_bg"
+            android:drawablePadding="10dp"
+            android:paddingHorizontal="10dp"
+            android:text="@string/avaliacoes"
+            android:textAlignment="textStart"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btn_edit_profile" />
+
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_help"
             android:layout_width="match_parent"
             android:layout_height="50dp"
@@ -101,7 +120,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_edit_profile" />
+            app:layout_constraintTop_toBottomOf="@+id/btn_avaliacao" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_logout"
@@ -122,31 +141,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_help" />
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_avaliacao"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:background="@drawable/grey_bg"
-            android:drawablePadding="10dp"
-            android:paddingHorizontal="10dp"
-            android:text="@string/avaliacoes"
-            android:textAlignment="textStart"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
-
         <Button
             android:id="@+id/btn_on_off"
-            android:layout_width="65dp"
+            android:layout_width="wrap_content"
             android:layout_height="41dp"
             android:layout_marginBottom="4dp"
             android:text="@string/car"
-            android:backgroundTint="@color/green_300"
+            android:backgroundTint="@color/grey_500"
             app:layout_constraintBottom_toBottomOf="@+id/divider_3"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.93"

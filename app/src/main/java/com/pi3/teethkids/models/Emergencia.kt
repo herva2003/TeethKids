@@ -3,6 +3,7 @@ package com.pi3.teethkids.models
 import java.util.*
 
 data class Emergencia(
+    val recusadoPor: List<String>? = null,
     var emergenciaId: String? = null,
     var userId: String? = null,
     var issueName: String? = null,

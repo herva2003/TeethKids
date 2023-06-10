@@ -95,6 +95,10 @@ class CompleteRegistrationFragment : Fragment() {
         progressDialog = ProgressDialog(requireContext())
         progressDialog.setMessage("Criando conta...")
         progressDialog.setCancelable(false)
+
+
+        binding.inputEmail.setText(currentUser!!.email)
+
     }
 
     private fun openCamera() {
@@ -202,7 +206,8 @@ class CompleteRegistrationFragment : Fragment() {
                             "createdAt" to FieldValue.serverTimestamp(),
                             "fcmToken" to getFcmToken(),
                             "curriculo" to curriculo,
-                            "selfie" to photoUrl
+                            "selfie" to photoUrl,
+                            "status" to "OFFLINE"
                         )
 
                         FirebaseUtils().firestore

@@ -135,8 +135,6 @@ class   ProfileFragment : Fragment() {
 
     private fun statusUser() {
         with(binding) {
-            var flag = true
-
             val onHashMap = hashMapOf(
                 "status" to "ONLINE",
             )
@@ -144,50 +142,50 @@ class   ProfileFragment : Fragment() {
                 "status" to "OFFLINE",
             )
 
-            btnOnOff.setOnClickListener{
+            // Get the initial status from the user object
+            var flag = user.status == "ONLINE"
 
-                flag = if (flag) {
-                    btnOnOff.setBackgroundColor(Color.GREEN)
-                    btnOnOff.text = "ON"
-                    false
-                } else {
-                    btnOnOff.setBackgroundColor(Color.RED)
-                    btnOnOff.text = "OFF"
-                    true
-                }
+            updateButtonState(flag)
 
-                if (btnOnOff.text == "ON") {
-                    FirebaseUtils().firestore
-                        .collection("users")
-                        .document(user.userId!!)
-                        .update(onHashMap as Map<String, Any>)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                // Go to inspection review index
-                                Toast.makeText(activity, "Voce está ONLINE", Toast.LENGTH_SHORT).show()
-                            } else {
-                                // Error handling
-                                Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
-                            }
+            btnOnOff.setOnClickListener {
+
+                flag = !flag
+
+                updateButtonState(flag)
+
+                val statusHashMap = if (flag) onHashMap else offHashMap
+
+                FirebaseUtils().firestore
+                    .collection("users")
+                    .document(user.userId!!)
+                    .update(statusHashMap as Map<String, Any>)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            user.status = if (flag) "ONLINE" else "OFFLINE"
+                            val statusText = if (flag) "ONLINE" else "OFFLINE"
+                            Toast.makeText(activity, "Você está $statusText", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                         }
-                } else {
-                    FirebaseUtils().firestore
-                        .collection("users")
-                        .document(user.userId!!)
-                        .update(offHashMap as Map<String, Any>)
-                        .addOnCompleteListener { task ->
-                            if (task.isSuccessful) {
-                                // Go to inspection review index
-                                Toast.makeText(activity, "Voce está OFFLINE", Toast.LENGTH_SHORT).show()
-                            } else {
-                                // Error handling
-                                Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
-                            }
-                        }
-                }
+                    }
             }
         }
     }
+
+    private fun updateButtonState(isOnline: Boolean) {
+        with(binding) {
+            if (isOnline) {
+                btnOnOff.setBackgroundColor(Color.GREEN)
+                btnOnOff.text = "ON"
+            } else {
+                btnOnOff.setBackgroundColor(Color.RED)
+                btnOnOff.text = "OFF"
+            }
+        }
+    }
+
+
+
 
     private fun loadUser() {
         // Get user from shared preference
@@ -226,6 +224,19 @@ class   ProfileFragment : Fragment() {
                             val rotatedBitmap = rotateBitmap(bitmap, -90f)
                             binding.imgSelfie.scaleType = ImageView.ScaleType.CENTER_CROP
                             binding.imgSelfie.setImageBitmap(rotatedBitmap)
+
+                            // Check status and update button color and text
+                            val status = user.status
+                            if (status == "ONLINE") {
+                                binding.btnOnOff.setBackgroundColor(Color.GREEN)
+                                binding.btnOnOff.text = "ON"
+                            } else {
+                                binding.btnOnOff.setBackgroundColor(Color.RED)
+                                binding.btnOnOff.text = "OFF"
+                            }
+
+                            // Add event listeners after populating the user
+                            addEventListeners()
                         }
 
                         override fun onError(e: Exception) {
@@ -234,4 +245,5 @@ class   ProfileFragment : Fragment() {
                 }
             }
     }
+
 }

@@ -63,7 +63,7 @@ class ConsultasFragment : Fragment(), ConsultaAdapterListener {
         with(binding) {
             val context = requireContext()
             // Initialise adapter
-            appointmentsRecyclerView.adapter = ConsultaAdapter(
+            consultaRecyclerView.adapter = ConsultaAdapter(
                 consultas, user.userId!!, context, this@ConsultasFragment
             )
 
@@ -104,7 +104,7 @@ class ConsultasFragment : Fragment(), ConsultaAdapterListener {
 
                     val context = requireContext()
                     // Update recycler view
-                    binding.appointmentsRecyclerView.adapter = ConsultaAdapter(
+                    binding.consultaRecyclerView.adapter = ConsultaAdapter(
                         consultas, user.userId!!, context, this@ConsultasFragment
                     )
 
