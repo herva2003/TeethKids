@@ -7,5 +7,7 @@ data class Consulta(
     var dentistId: String? = null,
     var userPhoneNumber: String? = null,
     var createdAt: Date? = null,
+    var latitude: Double? = null,
+    var longitude: Double? = null,
 )
 

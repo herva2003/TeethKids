@@ -26,6 +26,8 @@ import android.graphics.Typeface
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
+import android.util.Log
+import android.view.View
 
 
 interface ConsultaAdapterListener {
@@ -49,6 +51,16 @@ class ConsultaAdapter(
             binding.txtDescription.setOnClickListener {
                 val clickedConsulta = consulta[adapterPosition]
                 openDialer(clickedConsulta.userPhoneNumber!!)
+            }
+
+            binding.btnLocal.setOnClickListener {
+                val clickedConsulta = consulta[adapterPosition]
+                val latitude = clickedConsulta.latitude
+                val longitude = clickedConsulta.longitude
+
+                val address = "$latitude,$longitude"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse("http://maps.google.com/maps?q=$address"))
+                context.startActivity(intent)
             }
         }
     }
@@ -80,6 +92,16 @@ class ConsultaAdapter(
                     // Set description
                     val description = "Você marcou uma consulta. Ligue para ${consulta.userPhoneNumber} e confirme os detalhes."
                     txtDescription.text = formatTextToBold(description, consulta.userPhoneNumber!!)
+                }
+
+                // Set visibility of btnLocal based on latitude and longitude
+                val latitude = consulta.latitude
+                val longitude = consulta.longitude
+
+                if (latitude != null && longitude != null) {
+                    btnLocal.visibility = View.VISIBLE
+                } else {
+                    btnLocal.visibility = View.GONE
                 }
             }
         }

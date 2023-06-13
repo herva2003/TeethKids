@@ -50,7 +50,6 @@ class EditProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         // Load user
         loadUser()
         populateUser()
@@ -61,6 +60,9 @@ class EditProfileFragment : Fragment() {
         binding.editImage.setOnClickListener{
             cameraProviderResult.launch(android.Manifest.permission.CAMERA)
         }
+
+//        Log.d("latLong", "${user.latitude} ${user.longitude}")
+
     }
 
     private val cameraProviderResult = registerForActivityResult(ActivityResultContracts.RequestPermission()){

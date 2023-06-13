@@ -1,18 +1,19 @@
 package com.pi3.teethkids.fragments.emergencias
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.R
 import com.pi3.teethkids.adapters.EmergenciaAdapter
 import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentEmergenciaListaBinding
 import com.pi3.teethkids.models.Emergencia
 import com.pi3.teethkids.models.User
+import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.utils.FirebaseUtils
 
 class EmergenciaListaFragment : Fragment() {
@@ -90,6 +91,11 @@ class EmergenciaListaFragment : Fragment() {
                             binding.txtEmpty.visibility = View.GONE
                         } else {
                             binding.txtEmpty.visibility = View.VISIBLE
+                        }
+
+                        // Sort emergencies
+                        emergencias.sortedByDescending {
+                            it.createdAt
                         }
 
                         // Update recycler view

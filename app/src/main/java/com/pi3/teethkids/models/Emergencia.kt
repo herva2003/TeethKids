@@ -1,5 +1,6 @@
 package com.pi3.teethkids.models
 
+import com.google.firebase.firestore.GeoPoint
 import java.util.*
 
 data class Emergencia(
@@ -12,4 +13,5 @@ data class Emergencia(
     var aceitado: Boolean = false,
     var reviewedAt: Date? = null,
     var createdAt: Date? = null,
+    var location: GeoPoint? = null,
 )
