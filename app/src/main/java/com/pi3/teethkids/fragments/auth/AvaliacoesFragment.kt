@@ -171,6 +171,17 @@ class AvaliacoesFragment : Fragment() {
                     .collection("users")
                     .document(userId)
                     .update("nota", mediaNotasString)
+                    .addOnSuccessListener {
+                        // Atualizar a quantidade de avaliações no documento userId
+                        updateQuantidadeAvaliacoes(userId, quantidadeNotas)
+                    }
             }
+    }
+
+    private fun updateQuantidadeAvaliacoes(userId: String, quantidadeAvaliacoes: Int) {
+        FirebaseUtils().firestore
+            .collection("users")
+            .document(userId)
+            .update("quantidadeAvaliacoes", quantidadeAvaliacoes)
     }
 }
