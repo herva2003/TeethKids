@@ -26,6 +26,10 @@ class EmergenciaListaFragment : Fragment() {
     private var showAll: Boolean = true
     private lateinit var userLocationGeoPoint: GeoPoint
 
+    interface UserLocationCallback {
+        fun onUserLocationLoaded(geoPoint: GeoPoint)
+    }
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEmergenciaListaBinding.inflate(inflater, container, false)
         return binding.root
@@ -35,9 +39,13 @@ class EmergenciaListaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadUser()
-        loadUserLocation()
-        addEventListeners()
-        loadEmergencies(showAll)
+        loadUserLocation(object : UserLocationCallback {
+            override fun onUserLocationLoaded(geoPoint: GeoPoint) {
+                userLocationGeoPoint = geoPoint
+                addEventListeners()
+                loadEmergencies(showAll)
+            }
+        })
     }
 
     private fun loadUser() {
@@ -48,7 +56,7 @@ class EmergenciaListaFragment : Fragment() {
     }
 
     private fun addEventListeners() {
-        with (binding) {
+        with(binding) {
             emergencyRecyclerView.adapter = EmergenciaAdapter(view?.context!!, emergencias)
 
             swipeLayout.setOnRefreshListener {
@@ -84,7 +92,7 @@ class EmergenciaListaFragment : Fragment() {
         return raioTerra * c
     }
 
-    private fun loadUserLocation() {
+    private fun loadUserLocation(callback: UserLocationCallback) {
         FirebaseUtils().firestore
             .collection("users")
             .document(user.userId!!)
@@ -98,7 +106,8 @@ class EmergenciaListaFragment : Fragment() {
 
                     if (latitude != null && longitude != null) {
                         Log.d("EmergenciaListaFragment", "User Latitude: $latitude, User Longitude: $longitude")
-                        userLocationGeoPoint = GeoPoint(latitude, longitude)
+                        val userLocationGeoPoint = GeoPoint(latitude, longitude)
+                        callback.onUserLocationLoaded(userLocationGeoPoint)
                     }
                 }
             }

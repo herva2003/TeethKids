@@ -9,4 +9,5 @@ data class Review(
     var reviewApp: String? = null,
     var reviewNotaApp: String? = null,
     var createdAt: Long? = null,
+    var reportado: Boolean? = null,
 )
