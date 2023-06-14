@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.pi3.teethkids.R
 import com.pi3.teethkids.models.Review
 import com.pi3.teethkids.databinding.ListReviewItemBinding
+import com.pi3.teethkids.utils.FirebaseUtils
 import java.text.SimpleDateFormat
 
 class ReviewAdapter(
@@ -47,9 +48,25 @@ class ReviewAdapter(
                     txtDate.text = date
                 }
 
-                btnMarkAsProblematic.setOnClickListener {
-                    showConfirmationDialog(review)
-                }
+                FirebaseUtils().firestore
+                    .collection("avaliacoes")
+                    .document(review.reviewId!!)
+                    .get()
+                    .addOnSuccessListener { documentSnapshot ->
+                        val reportado = documentSnapshot.getBoolean("reportado")
+
+                        if (reportado == true) {
+                            btnMarkAsProblematic.isEnabled = false
+                            btnMarkAsProblematic.isClickable = false
+                            btnMarkAsProblematic.backgroundTintList = ContextCompat.getColorStateList(context, R.color.grey_500)
+                        } else {
+                            btnMarkAsProblematic.isEnabled = true
+                            btnMarkAsProblematic.isClickable = true
+                            btnMarkAsProblematic.setOnClickListener {
+                                showConfirmationDialog(review)
+                            }
+                        }
+                    }
             }
         }
     }

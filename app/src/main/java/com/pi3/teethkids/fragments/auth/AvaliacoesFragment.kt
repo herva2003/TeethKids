@@ -133,7 +133,7 @@ class AvaliacoesFragment : Fragment() {
             "dentistId" to review.dentistId,
             "avaliacaoId" to review.reviewId,
             "comentarioAtendimento" to review.reviewDentist,
-            "motivo" to problematicReason
+            "motivo" to problematicReason,
         )
 
         FirebaseUtils().firestore
@@ -145,6 +145,15 @@ class AvaliacoesFragment : Fragment() {
             .addOnFailureListener { e ->
                 Toast.makeText(activity, "Erro ao marcar o comentário como problemático: ${e.message}", Toast.LENGTH_SHORT).show()
             }
+
+        val reportadoData = hashMapOf(
+            "reportado" to true
+        )
+
+        FirebaseUtils().firestore
+            .collection("avaliacoes")
+            .document(review.reviewId!!)
+            .update(reportadoData as Map<String, Any>)
     }
 
     private fun calcularMediaNotas(userId: String) {
