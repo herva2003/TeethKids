@@ -18,5 +18,6 @@ data class User(
     var status: String? = null,
     var nota: String? = null,
     var count: String? = null,
+    var dentistLocation: Map<String, Double>? = null
 )
 

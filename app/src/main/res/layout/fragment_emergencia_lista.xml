@@ -48,14 +48,13 @@
         <Button
             android:id="@+id/btn_reviewed"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:foregroundTint="#1566DF"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/aceitados"
             android:textColor="@color/black"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"/>
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
@@ -87,6 +86,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/swipe_layout"
         app:layout_constraintTop_toTopOf="parent" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

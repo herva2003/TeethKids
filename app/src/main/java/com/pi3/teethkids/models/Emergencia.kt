@@ -14,4 +14,5 @@ data class Emergencia(
     var reviewedAt: Date? = null,
     var createdAt: Date? = null,
     var location: GeoPoint? = null,
+    var distancia: Double? = null,
 )
