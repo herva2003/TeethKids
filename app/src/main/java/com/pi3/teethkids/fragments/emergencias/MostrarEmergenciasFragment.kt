@@ -36,10 +36,10 @@ class MostrarEmergenciasFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        loadEmergencia()
 
-        binding.btnAvaliacao.setOnClickListener {
-            pedirAvaliacao()
+        val emergenciaId: String = args.emergenciasId
+        if (emergenciaId.isNotEmpty()) {
+            loadEmergencia(emergenciaId)
         }
 
         binding.arrowImage.setOnClickListener {
@@ -66,27 +66,40 @@ class MostrarEmergenciasFragment : Fragment() {
             }
     }
 
-    private fun loadEmergencia() {
-        val emergenciaId : String = args.emergenciasId
-        // Load emergency if emergency id is present
-        if (emergenciaId.isNotEmpty()) {
-            FirebaseUtils().firestore
-                .collection("emergencias")
-                .document(emergenciaId)
-                .get()
-                .addOnSuccessListener { documentSnapshot ->
-                    if (documentSnapshot.exists()) {
-                        // Grab the emergency object
-                        emergencia = documentSnapshot.toObject<Emergencia>()!!
-                        emergencia.emergenciaId = documentSnapshot.id
+    private fun loadEmergencia(emergenciaId: String) {
+        FirebaseUtils().firestore
+            .collection("emergencias")
+            .document(emergenciaId)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    emergencia = documentSnapshot.toObject<Emergencia>()!!
+                    emergencia.emergenciaId = documentSnapshot.id
+                    populateEmergencia()
+                    checkAvaliacao()
+                }
+            }
+            .addOnFailureListener { exception ->
+                Toast.makeText(activity, exception.message.toString(), Toast.LENGTH_SHORT).show()
+            }
+    }
 
-                        // Populate emergency fields
-                        populateEmergencia()
-                    }
+    private fun checkAvaliacao() {
+        val consultaRef = FirebaseFirestore.getInstance()
+            .collection("emergencias")
+            .document(emergencia.emergenciaId!!)
+
+        consultaRef.get().addOnSuccessListener { documentSnapshot ->
+            val campo = documentSnapshot.getBoolean("avaliado")
+
+            if (campo == null || !campo) {
+                binding.btnAvaliacao.visibility = View.VISIBLE
+                binding.btnAvaliacao.setOnClickListener {
+                    pedirAvaliacao()
                 }
-                .addOnFailureListener { exception ->
-                    Toast.makeText(activity, exception.message.toString(), Toast.LENGTH_SHORT).show()
-                }
+            } else {
+                binding.btnAvaliacao.visibility = View.GONE
+            }
         }
     }
 
