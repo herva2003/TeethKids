@@ -1,5 +1,6 @@
 package com.pi3.teethkids.fragments.auth
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -22,6 +23,12 @@ import android.widget.ImageView
 import androidx.navigation.findNavController
 import com.pi3.teethkids.R
 import com.squareup.picasso.Callback
+import android.location.Address
+import android.location.Geocoder
+import android.view.animation.Animation
+import android.view.animation.ScaleAnimation
+import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 
 class MostrarUsuarioFragment : Fragment() {
     private lateinit var binding: FragmentMostrarUsuarioBinding
@@ -100,6 +107,25 @@ class MostrarUsuarioFragment : Fragment() {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.width, bitmap.height, matrix, true)
     }
 
+    private fun addressToGeoPoint(context: Context, addressString: String): LatLng? {
+        val geocoder = Geocoder(context)
+        val addressList: List<Address>?
+        val address: Address?
+        var location: LatLng? = null
+
+        try {
+            addressList = geocoder.getFromLocationName(addressString, 1)
+            if (!addressList.isNullOrEmpty()) {
+                address = addressList[0]
+                location = LatLng(address.latitude, address.longitude)
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+
+        return location
+    }
+
     private fun populateProfile() {
         // Populate the fields
         with (binding) {
@@ -113,11 +139,58 @@ class MostrarUsuarioFragment : Fragment() {
             txtUserAddress3.text = profileUser.address3
             txtUserCurriculo.text = profileUser.curriculo
 
+            // Convert address to GeoPoint
+            val address1 = profileUser.address1
+            val address2 = profileUser.address2
+            val address3 = profileUser.address3
+
+            val geoPoint1 = addressToGeoPoint(requireContext(), address1!!)
+            val geoPoint2 = addressToGeoPoint(requireContext(), address2!!)
+            val geoPoint3 = addressToGeoPoint(requireContext(), address3!!)
+
+            // Set click listeners to save the GeoPoint to the user document
+            txtUserAddress1.setOnClickListener {
+                saveGeoPointToUser(geoPoint1)
+                animateClick(txtUserAddress1)
+            }
+            txtUserAddress2.setOnClickListener {
+                saveGeoPointToUser(geoPoint2)
+                animateClick(txtUserAddress2)
+            }
+            txtUserAddress3.setOnClickListener {
+                saveGeoPointToUser(geoPoint3)
+                animateClick(txtUserAddress3)
+            }
+
             // Set join date
             if (profileUser.createdAt != null) {
                 val formattedDate: String = "Se juntou em: " + SimpleDateFormat("MMMM yyyy").format(profileUser.createdAt!!)
                 txtUserJoinedAt.text = formattedDate
             }
+        }
+    }
+
+    private fun animateClick(view: View) {
+        val scaleAnimation = ScaleAnimation(1f, 0.9f, 1f, 0.9f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
+        scaleAnimation.duration = 100
+        scaleAnimation.repeatCount = 1
+        scaleAnimation.repeatMode = Animation.REVERSE
+        view.startAnimation(scaleAnimation)
+    }
+
+    private fun saveGeoPointToUser(geoPoint: LatLng?) {
+        if (geoPoint != null) {
+            val firestore = FirebaseUtils().firestore
+
+            firestore.collection("users")
+                .document(user.userId!!)
+                .update("dentistLocation", geoPoint)
+                .addOnSuccessListener {
+                    Toast.makeText(activity, "Endereço definido como ativo!", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(activity, "Erro ao ativar endereço!", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 }

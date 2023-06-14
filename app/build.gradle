@@ -81,6 +81,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
     implementation 'com.firebaseui:firebase-ui-storage:7.2.0'
 
+    implementation 'com.google.android.gms:play-services-maps:+'
+
     implementation 'com.github.denzcoskun:ImageSlideshow:0.1.2'
 
     // CameraX core library

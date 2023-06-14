@@ -13,8 +13,10 @@ import com.pi3.teethkids.constants.UserConstants
 import com.pi3.teethkids.databinding.FragmentEmergenciaListaBinding
 import com.pi3.teethkids.models.Emergencia
 import com.pi3.teethkids.models.User
+import com.google.firebase.firestore.GeoPoint
 import com.google.firebase.firestore.ktx.toObject
 import com.pi3.teethkids.utils.FirebaseUtils
+import kotlin.math.*
 
 class EmergenciaListaFragment : Fragment() {
 
@@ -22,6 +24,7 @@ class EmergenciaListaFragment : Fragment() {
     private var emergencias: ArrayList<Emergencia> = arrayListOf()
     private lateinit var user: User
     private var showAll: Boolean = true
+    private lateinit var userLocationGeoPoint: GeoPoint
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = FragmentEmergenciaListaBinding.inflate(inflater, container, false)
@@ -32,6 +35,7 @@ class EmergenciaListaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         loadUser()
+        loadUserLocation()
         addEventListeners()
         loadEmergencies(showAll)
     }
@@ -63,6 +67,43 @@ class EmergenciaListaFragment : Fragment() {
         }
     }
 
+    private fun calcularDistanciaEntrePontos(pontoA: GeoPoint, pontoB: GeoPoint): Double {
+        val raioTerra = 6371 // Raio médio da Terra em quilômetros
+
+        val latA = Math.toRadians(pontoA.latitude)
+        val lonA = Math.toRadians(pontoA.longitude)
+        val latB = Math.toRadians(pontoB.latitude)
+        val lonB = Math.toRadians(pontoB.longitude)
+
+        val dlon = lonB - lonA
+        val dlat = latB - latA
+
+        val a = sin(dlat / 2).pow(2) + (cos(latA) * cos(latB) * sin(dlon / 2).pow(2))
+        val c = 2 * atan2(sqrt(a), sqrt(1 - a))
+
+        return raioTerra * c
+    }
+
+    private fun loadUserLocation() {
+        FirebaseUtils().firestore
+            .collection("users")
+            .document(user.userId!!)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                val dentistLocation = documentSnapshot.get("dentistLocation") as? Map<*, *>
+
+                if (dentistLocation != null) {
+                    val latitude = dentistLocation["latitude"] as? Double
+                    val longitude = dentistLocation["longitude"] as? Double
+
+                    if (latitude != null && longitude != null) {
+                        Log.d("EmergenciaListaFragment", "User Latitude: $latitude, User Longitude: $longitude")
+                        userLocationGeoPoint = GeoPoint(latitude, longitude)
+                    }
+                }
+            }
+    }
+
     private fun loadEmergencies(showAll: Boolean = true) {
         // Clear emergency list
         emergencias = arrayListOf()
@@ -84,8 +125,19 @@ class EmergenciaListaFragment : Fragment() {
                             }
 
                             emergencia.emergenciaId = document.id
-                            emergencias.add(emergencia)
+
+                            // Get location GeoPoint from the document
+                            val location = document.getGeoPoint("location")
+
+                            if (location != null) {
+                                val distancia = calcularDistanciaEntrePontos(userLocationGeoPoint, location)
+                                if (distancia <= 20) {
+                                    emergencia.distancia = distancia
+                                    emergencias.add(emergencia)
+                                }
+                            }
                         }
+
                         // Initialise views if emergency is found
                         if (emergencias.size != 0) {
                             binding.txtEmpty.visibility = View.GONE

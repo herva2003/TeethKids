@@ -6,7 +6,7 @@ import com.pi3.teethkids.models.User
 import java.text.SimpleDateFormat
 import java.util.*
 
-class UserConstants() {
+class UserConstants {
     companion object {
         private fun saveData(activity: Activity, variable: String, data: String) {
             val sharedPref = activity.getPreferences(Context.MODE_PRIVATE) ?: return
@@ -32,6 +32,11 @@ class UserConstants() {
             user.address3?.let { saveData(activity, "address3", it) }
             user.curriculo?.let { saveData(activity, "curriculo", it) }
 
+            // Save dentistLocation
+            user.dentistLocation?.let { dentistLocation ->
+                val dentistLocationMap = dentistLocation.mapValues { it.value.toString() }
+                saveData(activity, "dentistLocation", dentistLocationMap.toString())
+            }
             // Format date
             user.createdAt?.let {
                 val createdAtString: String = SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(user.createdAt!!)
@@ -49,6 +54,28 @@ class UserConstants() {
             val address2: String? = getData(activity, "address2", "")
             val address3: String? = getData(activity, "address3", "")
             val curriculo: String? = getData(activity, "curriculo", "")
+            val selfie: String? = getData(activity, "selfie", "")
+            val fcmToken: String? = getData(activity, "fcmToken", "")
+            val status: String? = getData(activity, "status", "")
+            val nota: String? = getData(activity, "nota", "")
+            val count: String? = getData(activity, "count", "")
+
+            // Get dentistLocation
+            val dentistLocationString: String? = getData(activity, "dentistLocation", "")
+            val dentistLocation: Map<String, Double>? = if (!dentistLocationString.isNullOrEmpty()) {
+                // Parse string to map
+                val dentistLocationMap = dentistLocationString
+                    .substring(1, dentistLocationString.length - 1) // Remove enclosing brackets []
+                    .split(", ")
+                    .map {
+                        val keyValue = it.split("=")
+                        keyValue[0] to keyValue[1].toDouble()
+                    }
+                    .toMap()
+                dentistLocationMap
+            } else {
+                null
+            }
 
             // Parse string to date
             val createdAtString: String? = getData(activity, "createdAt", "")
@@ -69,7 +96,13 @@ class UserConstants() {
                 address2,
                 address3,
                 curriculo,
-                createdAt
+                createdAt,
+                selfie,
+                fcmToken,
+                status,
+                nota,
+                count,
+                dentistLocation
             )
         }
 
@@ -84,6 +117,11 @@ class UserConstants() {
             saveData(activity, "address3", "")
             saveData(activity, "curriculo", "")
             saveData(activity, "createdAt", "")
+            saveData(activity, "selfie", "")
+            saveData(activity, "fcmToken", "")
+            saveData(activity, "status", "")
+            saveData(activity, "nota", "")
+            saveData(activity, "dentistLocation", "")
         }
     }
 }
