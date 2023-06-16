@@ -158,7 +158,7 @@ class EmergenciaARFragment : Fragment() {
     private fun addEventListeners() {
         with (binding) {
             btnSubmit.setOnClickListener {
-                aceitarEmergencia()
+                aceitarOuRecusarEmergencia()
             }
 
             arrowImage.setOnClickListener {
@@ -173,50 +173,60 @@ class EmergenciaARFragment : Fragment() {
         }.getOrNull()
     }
 
-    private fun aceitarEmergencia() {
-        // Get input
-        if (binding.cbxAceitarEmergencia.isChecked) {
+    private fun aceitarOuRecusarEmergencia() {
+        val aceitarEmergencia = binding.cbxAceitarEmergencia.isChecked
+        val recusarEmergencia = binding.cbxRecusarEmergencia.isChecked
+
+        if (aceitarEmergencia && recusarEmergencia) {
+            Toast.makeText(activity, "Marque apenas um botão", Toast.LENGTH_SHORT).show()
+        } else if (!aceitarEmergencia && !recusarEmergencia) {
+            Toast.makeText(activity, "Marque um botão", Toast.LENGTH_SHORT).show()
+        } else {
 
             // Update emergency
-            val emergencyHashMap = hashMapOf(
-                "dentistId" to FieldValue.arrayUnion(user.userId),
-            )
+            if (aceitarEmergencia) {
+                val emergencyHashMap = hashMapOf(
+                    "dentistId" to FieldValue.arrayUnion(user.userId),
+                )
 
-            FirebaseUtils().firestore
-                .collection("emergencias")
-                .document(emergencia.emergenciaId!!)
-                .update(emergencyHashMap as Map<String, Any>)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Go to emergency review index
-                        Toast.makeText(activity, "Emergencia aceitada!", Toast.LENGTH_SHORT).show()
-                        view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
-                    } else {
-                        // Error handling
-                        Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                FirebaseUtils().firestore
+                    .collection("emergencias")
+                    .document(emergencia.emergenciaId!!)
+                    .update(emergencyHashMap as Map<String, Any>)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Go to emergency review index
+                            Toast.makeText(activity, "Emergencia aceitada!", Toast.LENGTH_SHORT).show()
+                            view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
+                        } else {
+                            // Error handling
+                            Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
-        }else {
+            } else {
 
-            // Update emergency
-            val emergencyHashMap = hashMapOf(
-                "recusadoPor" to FieldValue.arrayUnion(user.userId),
-            )
+                // Update emergency
+                val emergencyHashMap = hashMapOf(
+                    "recusadoPor" to FieldValue.arrayUnion(user.userId),
+                )
 
-            FirebaseUtils().firestore
-                .collection("emergencias")
-                .document(emergencia.emergenciaId!!)
-                .update(emergencyHashMap as Map<String, Any>)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        // Go to emergency review index
-                        Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
-                        view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
-                    } else {
-                        // Error handling
-                        Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                FirebaseUtils().firestore
+                    .collection("emergencias")
+                    .document(emergencia.emergenciaId!!)
+                    .update(emergencyHashMap as Map<String, Any>)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            // Go to emergency review index
+                            Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
+                            view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
+                        } else {
+                            // Error handling
+                            Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
+                Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
+            }
+            view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
         }
     }
 }
