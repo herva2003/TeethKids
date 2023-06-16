@@ -21,14 +21,14 @@
 
     <Button
         android:id="@+id/btnMarkAsProblematic"
-        android:layout_width="75dp"
+        android:layout_width="90dp"
         android:layout_height="40dp"
-        android:text="Report"
+        android:text="@string/reportar"
         android:textSize="10sp"
         android:backgroundTint="@color/red_600"
         android:layout_marginTop="60dp"
         android:layout_marginBottom="8dp"
-        android:layout_marginStart="-5dp"
+        android:layout_marginStart="22dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.238"
@@ -60,7 +60,7 @@
 
     <TextView
         android:id="@+id/txt_description"
-        android:layout_width="270dp"
+        android:layout_width="230dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="65dp"
