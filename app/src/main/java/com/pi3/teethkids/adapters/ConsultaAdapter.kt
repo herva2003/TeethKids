@@ -28,6 +28,7 @@ import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
 import android.util.Log
 import android.view.View
+import com.pi3.teethkids.utils.FirebaseUtils
 
 
 interface ConsultaAdapterListener {
@@ -127,10 +128,11 @@ class ConsultaAdapter(
     }
 
     private fun showCustomDialog(position: Int) {
-        val emergenciasCollection = FirebaseFirestore.getInstance().collection("users")
-        val documentId = emergenciasCollection.document(userId)
 
-        documentId.get().addOnSuccessListener { document ->
+        FirebaseUtils().firestore
+            .collection("users")
+            .document(userId)
+            .get().addOnSuccessListener { document ->
             if (document != null && document.exists()) {
                 val address1 = document.getString("address1")
                 val address2 = document.getString("address2")

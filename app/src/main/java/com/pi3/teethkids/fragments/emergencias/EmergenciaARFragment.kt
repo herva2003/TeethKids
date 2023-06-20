@@ -89,14 +89,10 @@ class EmergenciaARFragment : Fragment() {
             val imageSlider = imageSlider
             val imageList = ArrayList<SlideModel>()
 
-            // Recuperar a referência para a coleção 'emergencias'
-            val emergenciasCollection = FirebaseFirestore.getInstance().collection("emergencias")
-
-            // Recuperar o documento relevante usando o ID (ou outro critério)
-            val emergenciaDoc = emergenciasCollection.document(emergenciaId)
-
-            // Recuperar os dados do documento
-            emergenciaDoc.get()
+            FirebaseUtils().firestore
+                .collection("emergencias")
+                .document(emergenciaId)
+                .get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val imageUrl1 = document.getString("imageUrl1")
@@ -167,12 +163,6 @@ class EmergenciaARFragment : Fragment() {
         }
     }
 
-    private fun getFcmToken(): String? {
-        return runCatching {
-            FirebaseMessaging.getInstance().token.result
-        }.getOrNull()
-    }
-
     private fun aceitarOuRecusarEmergencia() {
         val aceitarEmergencia = binding.cbxAceitarEmergencia.isChecked
         val recusarEmergencia = binding.cbxRecusarEmergencia.isChecked
@@ -224,7 +214,6 @@ class EmergenciaARFragment : Fragment() {
                             Toast.makeText(activity, task.exception!!.message.toString(), Toast.LENGTH_SHORT).show()
                         }
                     }
-                Toast.makeText(activity, "Emergencia recusada!", Toast.LENGTH_SHORT).show()
             }
             view?.findNavController()?.navigate(R.id.action_emergenciaARFragment_to_emergenciaListaFragment)
         }
