@@ -37,6 +37,7 @@ import java.text.SimpleDateFormat
 class   ProfileFragment : Fragment() {
     private lateinit var binding: FragmentProfileBinding
     private lateinit var user: User
+    private var nota: Float = 0.0f
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -184,9 +185,6 @@ class   ProfileFragment : Fragment() {
         }
     }
 
-
-
-
     private fun loadUser() {
         // Get user from shared preference
         activity?.let {
@@ -202,6 +200,18 @@ class   ProfileFragment : Fragment() {
 
     private fun populateUser() {
         binding.txtName.text = user.name
+
+        FirebaseUtils().firestore
+            .collection("users")
+            .document(user.userId!!)
+            .get()
+            .addOnSuccessListener { documentSnapshot ->
+                if (documentSnapshot.exists()) {
+                    val notaString = documentSnapshot.getString("nota") ?: ""
+                    nota = notaString.toFloatOrNull() ?: 0.0f
+                    binding.txtNota.text = String.format("%.2f", nota)
+                }
+            }
 
         FirebaseUtils().firestore
             .collection("users")

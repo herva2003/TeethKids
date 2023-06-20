@@ -28,26 +28,52 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/img_selfie" />
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/txt_created_at"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/opa"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/grey_bg"
+            android:layout_marginTop="136dp"
             android:layout_marginStart="24dp"
+            android:paddingEnd="10dp"
+            android:paddingStart="8dp"
+            android:padding="4dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_name" />
+            app:layout_constraintTop_toTopOf="parent">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_star"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/txt_nota"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    app:layout_constraintStart_toEndOf="@+id/img_star"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/divider_3"
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="24dp"
             android:background="?android:attr/listDivider"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/txt_created_at" />
+            app:layout_constraintTop_toBottomOf="@+id/opa" />
 
         <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_view_profile"
@@ -142,7 +168,7 @@
             android:layout_marginBottom="24dp"
             android:background="@drawable/round_bg"
             android:backgroundTint="#1566DF"
-            android:text="Ativar notificações"
+            android:text="@string/ativar"
             android:textColor="@android:color/white"
             android:textSize="18sp"
             android:textStyle="bold"
