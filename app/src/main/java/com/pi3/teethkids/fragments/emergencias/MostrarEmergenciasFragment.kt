@@ -111,14 +111,10 @@ class MostrarEmergenciasFragment : Fragment() {
             val imageSlider = imageSlider
             val imageList = ArrayList<SlideModel>()
 
-            // Recuperar a referência para a coleção 'emergencias'
-            val emergenciasCollection = FirebaseFirestore.getInstance().collection("emergencias")
-
-            // Recuperar o documento relevante usando o ID (ou outro critério)
-            val emergenciaDoc = emergenciasCollection.document(emergenciaId)
-
-            // Recuperar os dados do documento
-            emergenciaDoc.get()
+            FirebaseUtils().firestore
+                .collection("emergencias")
+                .document(emergenciaId)
+                .get()
                 .addOnSuccessListener { document ->
                     if (document != null && document.exists()) {
                         val imageUrl1 = document.getString("imageUrl1")
