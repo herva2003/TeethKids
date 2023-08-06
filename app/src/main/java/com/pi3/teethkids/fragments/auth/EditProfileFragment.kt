@@ -60,9 +60,6 @@ class EditProfileFragment : Fragment() {
         binding.editImage.setOnClickListener{
             cameraProviderResult.launch(android.Manifest.permission.CAMERA)
         }
-
-//        Log.d("latLong", "${user.latitude} ${user.longitude}")
-
     }
 
     private val cameraProviderResult = registerForActivityResult(ActivityResultContracts.RequestPermission()){

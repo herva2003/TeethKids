@@ -96,7 +96,6 @@ class CompleteRegistrationFragment : Fragment() {
         progressDialog.setMessage("Criando conta...")
         progressDialog.setCancelable(false)
 
-
         binding.inputEmail.setText(currentUser!!.email)
 
     }
