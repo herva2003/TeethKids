@@ -11,22 +11,6 @@ O módulo do profissional é dedicado aos dentistas e tem como objetivo facilita
 ### Funcionalidades
 
 - **Gerenciar meu perfil:** Os dentistas podem criar uma conta no aplicativo, fornecendo suas informações pessoais, endereços de atendimento, mini currículo e foto. Após a criação da conta, ela será automaticamente aprovada pelo sistema.
-<table>
-  <tr>
-      <td>
-      <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/registerLogin.gif">
-    </td>
-    <td>
-      <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/profileGif.gif">
-    </td>
-    <td>
-      <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/addressGif.gif">
-    </td>
-    <td>
-      <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/netGif.gif">
-    </td>
-  </tr>
-</table>
 
 - **Notificações de emergência:** Quando uma emergência é relatada, todos os dentistas disponíveis na área recebem uma notificação para aceitar ou rejeitar o atendimento. O sistema organiza e apresenta as notificações aos chamadores para que eles possam escolher o dentista que desejam.
 
@@ -34,23 +18,9 @@ O módulo do profissional é dedicado aos dentistas e tem como objetivo facilita
   
  **Nota importante** para utilização no emulador: Caso o projeto seja executado em um emulador, é necessário configurar manualmente a localização do dispositivo emulador para simular a localização real. Certifique-se de acessar as configurações do emulador e definir a localização desejada, para que as notificações de emergência sejam apresentadas corretamente com base na localização simulada.
 
-   <p align="center" >
-    <img width="200" height="300" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/emegencyGif.gif">
-  </p>
-
-
 - **Minha reputação:** Os profissionais podem consultar sua reputação no aplicativo, verificando as avaliações e os comentários recebidos dos chamadores. Caso encontrem algum comentário problemático, como calúnia ou difamação, eles podem reportar o problema para uma revisão posterior.
 
-  <p align="center" >
-    <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/reviewGif.gif">
-  </p>
-
 - **Meu status:** Os dentistas podem definir seu status de disponibilidade para atender emergências. Eles podem alternar entre disponível e indisponível, dependendo de sua agenda e compromissos.
-
- <p align="center" >
-    <img width="200" height="350" src="https://github.com/jwlds/TeethKids/blob/main/app/src/assets/statusGif.gif">
-  </p>
-
 
 O aplicativo possui mais funcionalidades, porém, elas dependem do app do socorrista, que faz parte da segunda parte do projeto e não foi demonstrada aqui.
 
